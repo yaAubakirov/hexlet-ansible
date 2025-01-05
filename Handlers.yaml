@@ -1,0 +1,43 @@
+---
+- name: Nginx installation and handlers usage
+  hosts: appservers
+  tasks:
+    - name: Apt update and upgrade
+      ansible.builtin.apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400
+      become: yes
+
+    - name: Apt install packages
+      ansible.builtin.apt:
+        pkg:
+          - nginx
+        update_cache: yes
+        cache_valid_time: 86400
+      become: yes
+
+    - name: Copy html file
+      ansible.builtin.copy:
+        src: ../files/index.html
+        dest: /usr/share/nginx/html/index.html
+        owner: root
+        group: root
+      become: yes
+    
+    - name: Copy conf file
+      ansible.builtin.copy:
+        src: ../files/nginx.conf
+        dest: /etc/nginx/nginx.conf
+        owner: root
+        group: root
+      notify:
+        - restart nginx
+      become: yes
+
+  handlers:
+    - name: restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+      become: yes
