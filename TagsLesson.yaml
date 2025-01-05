@@ -1,0 +1,46 @@
+---
+- name: Tags lesson
+  hosts: webservers
+  tasks:
+    - name: Apt update and upgrade
+      ansible.builtin.apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400
+      become: yes  
+      tags: uandu
+    - name: Apt install packages
+      ansible.builtin.apt:
+        pkg:
+          - git
+          - make
+          - openssl
+        update_cache: yes
+        cache_valid_time: 86400
+      become: yes  
+      tags: install
+    - name: Create xray user Arya
+      user:
+        name: arya
+        groups: got
+        append: yes
+        state: present
+        create_home: no
+      become: yes  
+      tags: user 
+    - name: Create xray user Tirion
+      user:
+        name: tirion
+        groups: got
+        append: yes
+        state: present
+      become: yes  
+      tags: user 
+    - name: Create xray user Sansa
+      user:
+        name: Sansa 
+        groups: got
+        append: yes
+        state: present
+      become: yes  
+      tags: user 
