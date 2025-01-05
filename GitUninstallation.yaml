@@ -1,0 +1,9 @@
+---
+- name: Git Uninstallation
+  hosts: webservers
+  tasks:
+    - name: Git uninstallation
+      ansible.builtin.apt:
+        name: git
+        state: absent
+      become: yes
